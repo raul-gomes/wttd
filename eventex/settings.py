@@ -31,6 +31,8 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 #ALLOWED_HOSTS = ['127.0.0.1', '.localhost', '.herokuapp.com']
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default=[], cast=Csv())
 
+DEFAULT_FROM_EMAIL = 'rsgomes86@hotmail.com'
+
 
 # Application definition
 
