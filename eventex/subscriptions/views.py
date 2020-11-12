@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.template.loader import render_to_string
 
 from eventex.subscriptions.forms import SubscriptionForm
+from eventex.subscriptions.models import Subscription
 
 
 def subscribe(request):
@@ -22,9 +23,17 @@ def create(request):
         return render(request, 'subscriptions/subscription_form.html',
                       {'form': form})
 
-    _send_mail('Confirmação de inscrição', form.cleaned_data, 'subscriptions/subscription_email.txt',
-               settings.DEFAULT_FROM_EMAIL, form.cleaned_data['email'])
+    # Send subscription email
+    #subscriber_email = form.cleaned_data['email']
+    _send_mail('Confirmação de inscrição',
+               form.cleaned_data,
+               'subscriptions/subscription_email.txt',
+               settings.DEFAULT_FROM_EMAIL,
+               form.cleaned_data['email'])
 
+    Subscription.objects.create(**form.cleaned_data)
+
+    # Success feedback
     messages.success(request, 'Inscrição realizada com sucesso!')
 
     return HttpResponseRedirect('/inscricao/')
